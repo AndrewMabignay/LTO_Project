@@ -1,21 +1,17 @@
-<?php
+<?php 
+    session_start();
 
-require_once '../../config.php';
+    echo $_SESSION['id'];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $name = $_POST['name'];
-    $age = $_POST['age'];
-    $address = $_POST['address'];
-    $password = $_POST['password'];
-    $role = $_POST['role'];
-
-    $query = "INSERT INTO accounts(Name, Age, Address, Password, Role) VALUES ('$name', '$age', '$address', '$password', '$role')";
-    $insertFields = \mysqli_query($conn, $query);
-
-    echo $insertFields === true ? header("Location: accounts.php") : 'Not Successfully Inserted!';
-}
-
+    if (!isset($_SESSION['id'])):
+        header("Location: ../Auth/login.php");
+        exit;
+    elseif ($_SESSION['role'] !== "Admin"):
+        header("Location: ../user.php");
+        exit;
+    endif;
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

@@ -2,7 +2,7 @@
     require_once '../../config.php';
     
     $query = "SELECT * FROM accounts"; 
-    $retrieve = mysqli_query($conn, $query);
+    $retrieve = \mysqli_query($conn, $query);
 
 ?>
 
@@ -41,6 +41,10 @@
                 <td><?php echo $result['Address'] ?></td>
                 <td><?php echo $result['Password'] ?></td>
                 <td><?php echo $result['Role'] ?></td>
+                <td>
+                    <a href="">Edit</a>
+                    <a href="">Delete</a>
+                </td>
             </tr>
 
             <?php endwhile; ?>

@@ -2,6 +2,10 @@
 
 require_once '../config.php';
 
+session_start();
+session_unset();
+session_destroy();
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -26,8 +30,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($password === $users['Password']) {
 
             if ($users['Role'] === 'Admin') {
+                session_start();
+                $_SESSION['id'] = $users['ID'];
+                $_SESSION['name'] = $users['Name'];
+                $_SESSION['age'] = $users['Age'];
+                $_SESSION['address'] = $users['Address'];
+                $_SESSION['password'] = $users['Password'];
+                $_SESSION['role'] = $users['Role'];
                 header("Location: ../Views/admin.php");
-            } else if ($users['Role'] === 'User') {
+            } else if ($users['Role'] === "User") {
                 header("Location: ../Views/user.php");
             }
             exit();

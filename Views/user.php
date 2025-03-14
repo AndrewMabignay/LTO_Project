@@ -1,3 +1,17 @@
+<?php 
+    session_start();
+
+    echo $_SESSION['id'];
+
+    if (!isset($_SESSION['id'])):
+        header("Location: ../Auth/login.php");
+        exit;
+    elseif ($_SESSION['role'] !== "User"):
+        header("Location: admin.php");
+        exit;
+    endif;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
