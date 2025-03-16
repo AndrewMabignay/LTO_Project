@@ -11,13 +11,21 @@
         exit;
     endif;
 
-    if (isset($_POST['search'])) {
-        echo $_POST['plateNumber'];
-        // $query = 
-
+    if (isset($_POST['plateNumber'])) {
+        echo $_POST['plateNumber'];        
     }
 
-    if (isset($_POST['register'])) {
+    if (
+        isset($_POST['name']) && 
+        isset($_POST['age']) && 
+        isset($_POST['address']) && 
+        isset($_POST['model']) && 
+        isset($_POST['plateNumber']) && 
+        isset($_POST['officialReceipt']) && 
+        isset($_POST['certificateRegistration']) && 
+        isset($_POST['paymentControlNumber']) && 
+        isset($_POST['date'])
+    ) {
         // $userID = $_POST['userId'];
         $name = $_POST['name'];
         $age = $_POST['age'];
@@ -29,7 +37,7 @@
         $paymentController = $_POST['paymentControlNumber'];
         $date = $_POST['date'];
 
-        echo $name . $age . $address . $model . $plateNumber . $officialReceipt . $certificateRegistration . $paymentController . $date;
+        // echo $name . $age . $address . $model . $plateNumber . $officialReceipt . $certificateRegistration . $paymentController . $date;
 
         // $query = "INSERT INTO registered(Name, Address, Model, Plate, Official_Receipt, Certificate_Registration, Date) VALUES ('$name', '$address', '$model', '$plateNumber', '$officialReceipt', '$certificateRegistration', '$date');";
         
@@ -83,9 +91,11 @@
 
         <!-- ============== 2. PLATE NO. ============== -->
         <div class="input-container">
-            <label for="plateNumber">Plate #</label>
-            <input type="text" name="plateNumber" id="plateNumber">
-            <button type="submit" name="search">SUBMIT</button>
+            <form action="user.php" method="post">
+                <label for="plateNumber">Plate #</label>
+                <input type="text" name="plateNumber" id="plateNumber">
+                <button type="submit">SUBMIT</button>
+            </form>
         </div>
 
         <!-- ============== 3. Official Receipt ============== -->
@@ -113,7 +123,7 @@
         </div>
 
         <div class="button-container">
-            <button type="submit" name="register">REGISTER</button>
+            <button type="submit">REGISTER</button>
             <a href="../Auth/logout.php">LOG OUT</a>
         </div>
     </form>

@@ -3,8 +3,21 @@
 require_once '../config.php';
 
 session_start();
-session_unset();
-session_destroy();
+
+if (isset($_SESSION['id'])) {
+    echo $_SESSION['name'];
+    echo $_SESSION['role'];
+    
+    switch ($_SESSION['role']) {
+        case "Admin":
+            header("Location: ../Views/admin.php");
+            break;
+        case "User":
+            header("Location: ../Views/user.php");
+            break;
+    }
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
@@ -28,17 +41,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $users = $result->fetch_assoc();
         
         if ($password === $users['Password']) {
+            $_SESSION['id'] = $users['ID'];
+            $_SESSION['name'] = $users['Name'];
+            $_SESSION['age'] = $users['Age'];
+            $_SESSION['address'] = $users['Address'];
+            $_SESSION['password'] = $users['Password'];
+            $_SESSION['role'] = $users['Role'];
 
-            if ($users['Role'] === 'Admin') {
-                session_start();
-                $_SESSION['id'] = $users['ID'];
-                $_SESSION['name'] = $users['Name'];
-                $_SESSION['age'] = $users['Age'];
-                $_SESSION['address'] = $users['Address'];
-                $_SESSION['password'] = $users['Password'];
-                $_SESSION['role'] = $users['Role'];
+
+            if ($_SESSION['role'] === 'Admin') {
                 header("Location: ../Views/admin.php");
-            } else if ($users['Role'] === "User") {
+            } else if ($_SESSION['role'] === 'User') {
                 header("Location: ../Views/user.php");
             }
             exit();
@@ -47,18 +60,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
-
-
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login Page</title>
 </head>
 <body>
     <form action="login.php" method="POST">
