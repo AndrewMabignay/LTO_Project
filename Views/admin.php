@@ -13,7 +13,7 @@
 <body>
     <div class="container">
         <a href="admin/accounts.php">User Accounts</a>
-        <a href="">Registration</a>
+        <a href="admin/registered.php">Registration</a>
     </div>
 </body>
 </html>
