@@ -1,0 +1,65 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background: #007bff;
+    padding: 15px;
+    color: white;
+    text-align: right;
+    position: relative;
+}
+
+.nav {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 20px;
+}
+
+.user-menu {
+    position: relative;
+    cursor: pointer;
+}
+
+.user-name {
+    font-weight: bold;
+    padding: 10px;
+    background: #0056b3;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background: white;
+    list-style: none;
+    padding: 5px 0;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown li {
+    padding: 10px;
+    text-align: center;
+}
+
+.dropdown li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+}
+
+.dropdown li:hover {
+    background: #f8f9fa;
+}
+
+/* Show dropdown when hovering over user-menu */
+.user-menu:hover .dropdown {
+    display: block;
+}

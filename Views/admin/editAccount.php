@@ -1,7 +1,6 @@
 <?php 
     session_start();
-
-    echo $_SESSION['id'];
+    require '../../config.php';
 
     if (!isset($_SESSION['id'])):
         header("Location: ../Auth/login.php");
@@ -10,47 +9,76 @@
         header("Location: ../user.php");
         exit;
     endif;
-?>
 
+    $id = $_SESSION['id']; 
+
+    if (isset($_POST['submit'])) {
+        $name = $_POST['name'];
+        $age = $_POST['age'];
+        $address = $_POST['address'];
+        $password = $_POST['password'];
+        $role = $_POST['role'];
+
+        $query = "UPDATE accounts SET Name = ?, Age = ?, Address = ?, Password = ?, Role = ? WHERE ID = ?";
+        $stmt = mysqli_prepare($conn, $query);
+        mysqli_stmt_bind_param($stmt, "sisssi", $name, $age, $address, $password, $role, $id);
+
+        if (!mysqli_stmt_execute($stmt)) echo "Error updating record: " . mysqli_error($conn); 
+        
+        mysqli_stmt_close($stmt);
+    }
+
+    $query = "SELECT Name, Age, Address, Password, Role FROM accounts WHERE ID = ?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "i", $id);
+    mysqli_stmt_execute($stmt);
+    $retrieve = mysqli_stmt_get_result($stmt);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Edit Account</title>
 </head>
 <body>
-    <form action="addAccount.php" method="POST">
+    <?php 
+    if ($result = mysqli_fetch_array($retrieve)): 
+    ?>
+    <form action="editAccount.php" method="POST">
         <div class="name-container">
             <label for="name">Name</label>
-            <input type="text" name="name" id="name">
+            <input type="text" name="name" id="name" value="<?php echo $result['Name'] ?>">
         </div>
 
         <div class="name-container">
             <label for="age">Age</label>
-            <input type="number" name="age" id="age">
+            <input type="number" name="age" id="age" value="<?php echo $result['Age'] ?>">
         </div>
 
         <div class="address-container">
             <label for="address">Address</label>
-            <input type="text" name="address" id="address">
+            <input type="text" name="address" id="address" value="<?php echo $result['Address'] ?>">
         </div>
 
         <div class="password-container">
             <label for="password">Password</label>
-            <input type="password" name="password" id="password">
+            <input type="password" name="password" id="password" value="<?php echo $result['Password'] ?>">
         </div>
 
         <div class="role-container">
-            <label for="role">Role : </label>
+            <label for="role">Role</label>
             <select name="role" id="role">
-                <option value="User" selected>User</option>
-                <option value="Admin">Admin</option>
+                <option value="User" <?php echo ($result['Role'] == 'User') ? 'selected' : ''; ?>>User</option>
+                <option value="Admin" <?php echo ($result['Role'] == 'Admin') ? 'selected' : ''; ?>>Admin</option>
             </select>
         </div>
 
-        <button type="submit">SUBMIT</button>
+        <button type="submit" name="submit">SUBMIT</button>
     </form>
+    <?php else: ?>
+        <p>No record found.</p>
+    <?php endif; ?>
 </body>
 </html>
