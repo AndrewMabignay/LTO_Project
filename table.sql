@@ -38,4 +38,8 @@ ALTER TABLE registered ADD CONSTRAINT unique_certificate_registration UNIQUE (Ce
 
 DESC registered;
 
+INSERT INTO registered(Name, Address, Model, Plate, Official_Receipt, Certificate_Registration, Date) VALUES
+('AdminTest', 'AdminAddress', 'Honda Bike', '333-6666', 'AR-123-456', 'XYZ-091','2025-03-16');
 
+
+SELECT Official_Receipt, Certificate_Registration FROM registered WHERE plate = 'ABC1234';

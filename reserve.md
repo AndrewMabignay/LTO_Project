@@ -9,33 +9,23 @@
     elseif ($_SESSION['role'] !== "User"):
         header("Location: admin.php");
         exit;
-    endif;    
+    endif;
 
-    if (isset($_POST['search'])) {
-        $plateNumber = $_POST['plateNumber'];
-        echo $plateNumber;
-
-        $query = "SELECT Official_Receipt, Certificate_Registration FROM registered WHERE plate = ?";
-        $statement = $conn->prepare($query);
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("s", $plateNumber);
-        $stmt->execute();
-        $search = $stmt->get_result();
-        
-        if ($search->num_rows > 0) {
-            $fields = $search->fetch_assoc();
-            $officialReceipt = $fields['Official_Receipt'];
-            $certificateRegistration = $fields['Certificate_Registration'];
-        }
-        // if ($search->num_rows > 0) {
-        //     $fields = $result->fetch_assoc();
-        //     $officialReceipt = $fields['Official_Receipt'];
-        //     $certificateRegistration = $fields['Certificate_Registration'];
-        // }
-
+    if (isset($_POST['plateNumber'])) {
+        echo $_POST['plateNumber'];        
     }
 
-    if (isset($_POST['register'])) {
+    if (
+        isset($_POST['name']) && 
+        isset($_POST['age']) && 
+        isset($_POST['address']) && 
+        isset($_POST['model']) && 
+        isset($_POST['plateNumber']) && 
+        isset($_POST['officialReceipt']) && 
+        isset($_POST['certificateRegistration']) && 
+        isset($_POST['paymentControlNumber']) && 
+        isset($_POST['date'])
+    ) {
         // $userID = $_POST['userId'];
         $name = $_POST['name'];
         $age = $_POST['age'];
@@ -49,11 +39,11 @@
 
         // echo $name . $age . $address . $model . $plateNumber . $officialReceipt . $certificateRegistration . $paymentController . $date;
 
-        $query = "INSERT INTO registered(Name, Address, Model, Plate, Official_Receipt, Certificate_Registration, Date) VALUES ('$name', '$address', '$model', '$plateNumber', '$officialReceipt', '$certificateRegistration', '$date');";
+        // $query = "INSERT INTO registered(Name, Address, Model, Plate, Official_Receipt, Certificate_Registration, Date) VALUES ('$name', '$address', '$model', '$plateNumber', '$officialReceipt', '$certificateRegistration', '$date');";
         
-        $insertResult = \mysqli_query($conn, $query); 
+        // $insertResult = \mysqli_query($conn, $query); 
 
-        echo $insertResult ? 'Data Successfully Added' : 'Error : ' . \mysqli_error($conn); 
+        // echo $insertResult ? 'Data Successfully Added' : 'Error : ' . \mysqli_error($conn); 
     }
 ?>
 
@@ -101,21 +91,23 @@
 
         <!-- ============== 2. PLATE NO. ============== -->
         <div class="input-container">
-            <label for="plateNumber">Plate #</label>
-            <input type="text" name="plateNumber" id="plateNumber" value="<?php echo empty($plateNumber) ?  '' : $plateNumber; ?>">
-            <button type="submit" name="search">SUBMIT</button>
+            <form action="user.php" method="post">
+                <label for="plateNumber">Plate #</label>
+                <input type="text" name="plateNumber" id="plateNumber">
+                <button type="submit">SUBMIT</button>
+            </form>
         </div>
 
         <!-- ============== 3. Official Receipt ============== -->
         <div class="input-container">
             <label for="officialReceipt">Official Receipt</label>
-            <input type="text" name="officialReceipt" id="officialReceipt" value="<?php echo empty($officialReceipt) ?  '' : $officialReceipt; ?>">
+            <input type="text" name="officialReceipt" id="officialReceipt">
         </div>
 
         <!-- ============== 4. Certificate of Registration ============== -->
         <div class="input-container">
             <label for="certificateRegistration">Certificate of Registration</label>
-            <input type="text" name="certificateRegistration" id="certificateRegistration" value="<?php echo empty($certificateRegistration) ?  '' : $certificateRegistration; ?>">
+            <input type="text" name="certificateRegistration" id="certificateRegistration">
         </div>
 
         <!-- ============== 5. Payment Control # ============== -->
@@ -131,7 +123,7 @@
         </div>
 
         <div class="button-container">
-            <button type="submit" name="register">REGISTER</button>
+            <button type="submit">REGISTER</button>
             <a href="../Auth/logout.php">LOG OUT</a>
         </div>
     </form>

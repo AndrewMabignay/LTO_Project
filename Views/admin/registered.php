@@ -1,7 +1,7 @@
 <?php 
     require_once '../../config.php';
     
-    $query = "SELECT * FROM accounts"; 
+    $query = "SELECT * FROM registered"; 
     $retrieve = \mysqli_query($conn, $query);
 
 ?>
@@ -17,34 +17,30 @@
 </head>
 <body>
     <div class="title">
-        <label for="add-accounts">List of Accounts</label>
-        <a href="addAccount.php">New</a>
+        <label for="add-accounts">List of Registered</label>
     </div>
     <table>
         <thead>
             <tr>
-                <th>User ID</th>
                 <th>Name</th>
-                <th>Age</th>
                 <th>Address</th>
-                <th>Password</th>
-                <th>Role</th>
-                <th>Update</th>
+                <th>Model</th>
+                <th>Plate</th>
+                <th>Official_Receipt</th>
+                <th>Certificate_Registration</th>
+                <th>Date</th>
             </tr>
         </thead>
         <tbody>
             <?php while($result = \mysqli_fetch_array($retrieve)): ?>  
             <tr>
-                <td><?php echo $result['ID'] ?></td>
                 <td><?php echo $result['Name'] ?></td>
-                <td><?php echo $result['Age'] ?></td>
                 <td><?php echo $result['Address'] ?></td>
-                <td><?php echo $result['Password'] ?></td>
-                <td><?php echo $result['Role'] ?></td>
-                <td>
-                    <a href="">Edit</a>
-                    <a href="">Delete</a>
-                </td>
+                <td><?php echo $result['Model'] ?></td>
+                <td><?php echo $result['Plate'] ?></td>
+                <td><?php echo $result['Official_Receipt'] ?></td>
+                <td><?php echo $result['Certificate_Registration'] ?></td>
+                <td><?php echo $result['Date'] ?></td>
             </tr>
 
             <?php endwhile; ?>

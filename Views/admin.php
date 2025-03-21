@@ -1,3 +1,8 @@
+<?php 
+    session_start();
+    echo $_SESSION['id'] . $_SESSION['name'] . $_SESSION['age'] . $_SESSION['address'] . $_SESSION['password'] . $_SESSION['role'];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +13,7 @@
 <body>
     <div class="container">
         <a href="admin/accounts.php">User Accounts</a>
-        <a href="">Registration</a>
+        <a href="admin/registered.php">Registration</a>
     </div>
 </body>
 </html>
