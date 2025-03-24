@@ -43,3 +43,18 @@ INSERT INTO registered(Name, Address, Model, Plate, Official_Receipt, Certificat
 
 
 SELECT Official_Receipt, Certificate_Registration FROM registered WHERE plate = 'ABC1234';
+
+
+-- ADDITIONAL 
+
+SELECT Official_Receipt, Certificate_Registration, Date FROM registered WHERE Name = 'AdminTest' AND Address = 'AdminAddress' AND Plate = '333-6666';
+
+ALTER TABLE registered 
+ADD COLUMN PaymentControlNumber VARCHAR(100) NOT NULL 
+BEFORE Date;
+
+-- INSERT UNDER REGISTERED --
+INSERT INTO registered(Name, Address, Model, Plate, Official_Receipt, Certificate_Registration, Date, PaymentControlNumber) VALUES ('$name', '$address', '$model', '$plateNumber', '$officialReceipt', '$certificateRegistration', '$date', '$paymentController');
+
+-- BLOCK DUPLICATE PLATES --
+SELECT * FROM registered WHERE Plate = ?

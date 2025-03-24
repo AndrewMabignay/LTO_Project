@@ -9,16 +9,20 @@
     elseif ($_SESSION['role'] !== "User"):
         header("Location: admin.php");
         exit;
-    endif;    
+    endif;  
+    
+    $invalidPlate = '';
 
     if (isset($_POST['search'])) {
+        $name = $_POST['name'];
+        $address = $_POST['address'];
         $plateNumber = $_POST['plateNumber'];
-        echo $plateNumber;
 
-        $query = "SELECT Official_Receipt, Certificate_Registration FROM registered WHERE plate = ?";
-        $statement = $conn->prepare($query);
+        $query = "SELECT Official_Receipt, Certificate_Registration, Date FROM registered WHERE Name = ? AND Address = ? AND Plate = ?";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("s", $plateNumber);
+
+        $stmt->bind_param("sss", $name, $address, $plateNumber);
+
         $stmt->execute();
         $search = $stmt->get_result();
         
@@ -26,14 +30,14 @@
             $fields = $search->fetch_assoc();
             $officialReceipt = $fields['Official_Receipt'];
             $certificateRegistration = $fields['Certificate_Registration'];
+        } else {
+            /* Invalid Search */
+            $invalidPlate = 'Invalid Plate Search. Please try again!'; 
         }
-        // if ($search->num_rows > 0) {
-        //     $fields = $result->fetch_assoc();
-        //     $officialReceipt = $fields['Official_Receipt'];
-        //     $certificateRegistration = $fields['Certificate_Registration'];
-        // }
 
     }
+
+    $fieldsFilledUp = '';
 
     if (isset($_POST['register'])) {
         // $userID = $_POST['userId'];
@@ -47,13 +51,34 @@
         $paymentController = $_POST['paymentControlNumber'];
         $date = $_POST['date'];
 
-        // echo $name . $age . $address . $model . $plateNumber . $officialReceipt . $certificateRegistration . $paymentController . $date;
+        // echo $name . '<br>';
+        // echo $age . '<br>';
+        // echo $address . '<br>';
+        // echo $model . '<br>';
+        // echo $plateNumber . '<br>';
+        // echo $officialReceipt . '<br>';
+        // echo $certificateRegistration . '<br>';
+        // echo $paymentController . '<br>';
+        // echo $date . '<br>';
 
-        $query = "INSERT INTO registered(Name, Address, Model, Plate, Official_Receipt, Certificate_Registration, Date) VALUES ('$name', '$address', '$model', '$plateNumber', '$officialReceipt', '$certificateRegistration', '$date');";
-        
-        $insertResult = \mysqli_query($conn, $query); 
+        if (empty($model) || empty($plateNumber) || empty($officialReceipt) || empty($certificateRegistration) || empty($paymentController)) {
+            $fieldsFilledUp = 'Fill Up All Fields!';
+            echo $fieldsFilledUp;
+        } else {
+            $query = "SELECT * FROM registered WHERE Plate = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("s", $plateNumber);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-        echo $insertResult ? 'Data Successfully Added' : 'Error : ' . \mysqli_error($conn); 
+            if ($result->num_rows > 0) {
+                echo 'Bawal'; 
+            } else {
+                $query = "INSERT INTO registered(Name, Address, Model, Plate, Official_Receipt, Certificate_Registration, Date, PaymentControlNumber) VALUES ('$name', '$address', '$model', '$plateNumber', '$officialReceipt', '$certificateRegistration', '$date', '$paymentController');";
+                $insertResult = \mysqli_query($conn, $query); 
+                echo $insertResult ? 'Data Successfully Added' : 'Error : ' . \mysqli_error($conn);
+            }
+        }
     }
 ?>
 
@@ -63,78 +88,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <link rel="stylesheet" href="../public/user.css">
 </head>
 <body>
-    <h1>Hello User</h1>
-    <form action="user.php" method="POST">
+    <div class="container">
+        <header>Hello User</header>
 
-        <!-- ============== 1. USER ID ============== -->
-        <div class="input-container">
-            <label for="userId">User ID</label>
-            <input type="number" name="userId" id="userId" value="<?php echo $_SESSION['id'] ?>" readonly>
-        </div>
+        <form action="user.php" method="POST">
+            <!-- ------------------- PERSONAL DETAILS ------------------- -->
+            <div class="form first">
+                <div class="details personal">
+                    <span class="title">Personal Details</span>
 
-        <!-- ============== 2. NAME ============== -->
-        <div class="input-container">
-            <label for="name">Name</label>
-            <input type="text" name="name" id="name" value="<?php echo $_SESSION['name']?>" readonly>
-        </div>
+                    <div class="fields">
+                    
+                        <!-- ================ 1. USER ID ================ -->
+                        <div class="input-field">
+                            <label for="userId">User ID</label>
+                            <input type="number" name="userId" id="userId" value="<?php echo $_SESSION['id'] ?>" readonly>
+                        </div>
 
-        <!-- ============== 3. AGE ============== -->
-        <div class="input-container">
-            <label for="age">Age</label>
-            <input type="number" name="age" id="age" value="<?php echo $_SESSION['age'] ?>" readonly>
-        </div>
+                        <!-- ================ 2. NAME ================ -->
+                        <div class="input-field">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="name" value="<?php echo $_SESSION['name']?>" readonly>            
+                        </div>
 
-        <!-- ============== 4. ADDRESS ============== -->
-        <div class="input-container">
-            <label for="address">Address</label>
-            <input type="text" name="address" id="address" value="<?php echo $_SESSION['address'] ?>" readonly>
-        </div>
+                        <!-- ================ 3. AGE ================ -->
+                        <div class="input-field">                            
+                            <label for="age">Age</label>
+                            <input type="number" name="age" id="age" value="<?php echo $_SESSION['age'] ?>" readonly>
+                        </div>
 
-        <!-- ------------------- REGISTERED MODEL ------------------- -->
-        <!-- ============== 1. MAKE / MODEL ============== -->
-        <div class="input-container">
-            <label for="model">Make / Model</label>
-            <input type="text" name="model" id="model">
-        </div>
+                        <!-- ================ 4. ADDRESS ================ -->
+                        <div class="input-field">
+                            <label for="address">Address</label>
+                            <input type="text" name="address" id="address" value="<?php echo $_SESSION['address'] ?>" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-        <!-- ============== 2. PLATE NO. ============== -->
-        <div class="input-container">
-            <label for="plateNumber">Plate #</label>
-            <input type="text" name="plateNumber" id="plateNumber" value="<?php echo empty($plateNumber) ?  '' : $plateNumber; ?>">
-            <button type="submit" name="search">SUBMIT</button>
-        </div>
+            <!-- ------------------- REGISTERED MODEL ------------------- -->
+            <div class="form second">
+                <div class="details model">
+                    <span class="title">Model Details</span>
 
-        <!-- ============== 3. Official Receipt ============== -->
-        <div class="input-container">
-            <label for="officialReceipt">Official Receipt</label>
-            <input type="text" name="officialReceipt" id="officialReceipt" value="<?php echo empty($officialReceipt) ?  '' : $officialReceipt; ?>">
-        </div>
+                    <div class="fields">
+                    
+                        <!-- ================ 5. MAKE / MODEL ================ -->
+                        <div class="input-field">
+                            <label for="model">Make / Model</label>
+                            <input type="text" name="model" id="model">            
+                        </div>
 
-        <!-- ============== 4. Certificate of Registration ============== -->
-        <div class="input-container">
-            <label for="certificateRegistration">Certificate of Registration</label>
-            <input type="text" name="certificateRegistration" id="certificateRegistration" value="<?php echo empty($certificateRegistration) ?  '' : $certificateRegistration; ?>">
-        </div>
+                        <!-- ================ 6. PLATE # ================ -->
+                        <div class="input-field">
+                            <label for="plateNumber">Plate #</label>
+                            <input type="text" name="plateNumber" id="plateNumber" value="<?php echo empty($plateNumber) ?  '' : $plateNumber; ?>">                        
+                        </div>
 
-        <!-- ============== 5. Payment Control # ============== -->
-        <div class="input-container">
-            <label for="paymentControlNumber">Payment Control #</label>
-            <input type="text" name="paymentControlNumber" id="paymentControlNumber">
-        </div>
+                        <button class="search" type="submit" name="search">SEARCH</button>
 
-        <!-- ============== 6. Date ============== -->
-        <div class="input-container">
-            <label for="date">Date</label>
-            <input type="date" name="date" id="date" value="<?php echo date("Y-m-d"); ?>">
-        </div>
+                        <!-- ================ 7. OFFICIAL RECEIPT ================ -->
+                        <div class="input-field">                            
+                            <label for="officialReceipt">Official Receipt</label>
+                            <input type="text" name="officialReceipt" id="officialReceipt" value="<?php echo empty($officialReceipt) ?  '' : $officialReceipt; ?>">            
+                        </div>
 
-        <div class="button-container">
-            <button type="submit" name="register">REGISTER</button>
-            <a href="../Auth/logout.php">LOG OUT</a>
-        </div>
-    </form>
+                        <!-- ================ 8. CERTIFICATE OF REGISTRATION ================ -->
+                        <div class="input-field">
+                            <label for="certificateRegistration">Certificate of Registration</label>
+                            <input type="text" name="certificateRegistration" id="certificateRegistration" value="<?php echo empty($certificateRegistration) ?  '' : $certificateRegistration; ?>">            
+                        </div>
+
+                        <!-- ================ 9. PAYMENT CONTROL # ================ -->
+                        <div class="input-field">
+                            <label for="paymentControlNumber">Payment Control #</label>
+                            <input type="text" name="paymentControlNumber" id="paymentControlNumber">
+                        </div>
+
+                        <!-- ================ 10. DATE ================ -->
+                        <div class="input-field">
+                            <label for="date">Date</label>
+                            <input type="date" name="date" id="date" value="<?php echo date("Y-m-d"); ?>">
+                        </div>
+                    </div>
+
+                    <?php 
+                if ($invalidPlate != '') echo "<p>" . $invalidPlate . "</p>";
+            ?>
+
+            <div class="button-container">
+                <button type="submit" name="register">REGISTER</button>
+                <a href="../Auth/logout.php">LOG OUT</a>
+            </div>
+                </div>
+            </div>
+
+
+
+
+            
+
+
+
+            
+        </form>
+    </div>
+
+    
 
 </body>
 </html>

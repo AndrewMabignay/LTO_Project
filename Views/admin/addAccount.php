@@ -2,6 +2,16 @@
 
 require_once '../../config.php';
 
+session_start();
+
+if (!isset($_SESSION['id'])):
+    header("Location: ../../Auth/login.php");
+    exit;
+elseif ($_SESSION['role'] !== "Admin"):
+    header("Location: ../user.php");
+    exit;
+endif;    
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
     $age = $_POST['age'];

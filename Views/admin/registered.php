@@ -1,9 +1,18 @@
 <?php 
+    session_start();
+
+    if (!isset($_SESSION['id'])):
+        header("Location: ../../Auth/login.php");
+        exit;
+    elseif ($_SESSION['role'] !== "Admin"):
+        header("Location: ../user.php");
+        exit;
+    endif;    
+
     require_once '../../config.php';
     
     $query = "SELECT * FROM registered"; 
     $retrieve = \mysqli_query($conn, $query);
-
 ?>
 
 <!DOCTYPE html>
@@ -46,5 +55,13 @@
             <?php endwhile; ?>
         </tbody>
     </table>
+
+    <script>
+        window.addEventListener("pageshow", function(event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+    </script>
 </body>
 </html>

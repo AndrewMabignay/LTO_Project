@@ -2,7 +2,7 @@
     session_start();
 
     if (!isset($_SESSION['id'])):
-        header("Location: ../Auth/login.php");
+        header("Location: ../../Auth/login.php");
         exit;
     elseif ($_SESSION['role'] !== "Admin"):
         header("Location: ../user.php");
@@ -68,6 +68,13 @@
             <?php endwhile; ?>
         </tbody>
     </table>
+
+    <script>
+        window.addEventListener("pageshow", function(event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+    </script>
 </body>
 </html>
-

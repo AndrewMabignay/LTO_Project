@@ -3,14 +3,16 @@
     require '../../config.php';
 
     if (!isset($_SESSION['id'])):
-        header("Location: ../Auth/login.php");
+        header("Location: ../../Auth/login.php");
         exit;
     elseif ($_SESSION['role'] !== "Admin"):
         header("Location: ../user.php");
         exit;
-    endif;
+    endif;    
 
-    $id = $_SESSION['id']; 
+    // $id = $_SESSION['id']; 
+    $id = isset($_GET['id']) ? base64_decode($_GET['id']) : (isset($_POST['id']) ? $_POST['id'] : '');
+    echo $id;
 
     if (isset($_POST['submit'])) {
         $name = $_POST['name'];
@@ -18,14 +20,27 @@
         $address = $_POST['address'];
         $password = $_POST['password'];
         $role = $_POST['role'];
-
+        
         $query = "UPDATE accounts SET Name = ?, Age = ?, Address = ?, Password = ?, Role = ? WHERE ID = ?";
         $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, "sisssi", $name, $age, $address, $password, $role, $id);
 
-        if (!mysqli_stmt_execute($stmt)) echo "Error updating record: " . mysqli_error($conn); 
+        if ($stmt) {
+            echo 'Testing Gumana';
+
+            // Bind parameters
+            mysqli_stmt_bind_param($stmt, "sisssi", $name, $age, $address, $password, $role, $id);
         
-        mysqli_stmt_close($stmt);
+            // Execute and check
+            if (mysqli_stmt_execute($stmt)) {
+                if (mysqli_stmt_affected_rows($stmt) > 0) {
+                    echo "Account updated successfully!";
+                } else {
+                    echo "No changes made.";
+                }
+            } else {
+                echo "Error updating record: " . mysqli_stmt_error($stmt);
+            }            
+        }
     }
 
     $query = "SELECT Name, Age, Address, Password, Role FROM accounts WHERE ID = ?";
@@ -47,6 +62,8 @@
     if ($result = mysqli_fetch_array($retrieve)): 
     ?>
     <form action="editAccount.php" method="POST">
+        <input type="number" name="id" value="<?php echo $id ?>">
+
         <div class="name-container">
             <label for="name">Name</label>
             <input type="text" name="name" id="name" value="<?php echo $result['Name'] ?>">
