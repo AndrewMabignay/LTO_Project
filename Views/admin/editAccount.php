@@ -58,6 +58,8 @@
     <title>Edit Account</title>
 </head>
 <body>
+    <a href="accounts.php">Back</a>
+
     <?php 
     if ($result = mysqli_fetch_array($retrieve)): 
     ?>

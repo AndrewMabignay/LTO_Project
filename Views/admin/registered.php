@@ -22,7 +22,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <link rel="stylesheet" href="../../public/style.css">
+    <!-- External CSS -->
+    <link rel="stylesheet" href="../../public/table.css">
 </head>
 <body>
     <div class="title">
