@@ -14,14 +14,13 @@
     $invalidPlate = '';
 
     if (isset($_POST['search'])) {
-        $name = $_POST['name'];
-        $address = $_POST['address'];
+        $userID = $_POST['userId'];
         $plateNumber = $_POST['plateNumber'];
 
-        $query = "SELECT Official_Receipt, Certificate_Registration, Date FROM registered WHERE Name = ? AND Address = ? AND Plate = ?";
+        $query = "SELECT Official_Receipt, Certificate_Registration, Date FROM registered WHERE UserID = ? AND Plate = ?";
         $stmt = $conn->prepare($query);
 
-        $stmt->bind_param("sss", $name, $address, $plateNumber);
+        $stmt->bind_param("is", $userID, $plateNumber);
 
         $stmt->execute();
         $search = $stmt->get_result();
@@ -40,7 +39,7 @@
     $fieldsFilledUp = '';
 
     if (isset($_POST['register'])) {
-        // $userID = $_POST['userId'];
+        $userID = $_POST['userId'];
         $name = $_POST['name'];
         $age = $_POST['age'];
         $address = $_POST['address'];
@@ -50,16 +49,6 @@
         $certificateRegistration = $_POST['certificateRegistration'];
         $paymentController = $_POST['paymentControlNumber'];
         $date = $_POST['date'];
-
-        // echo $name . '<br>';
-        // echo $age . '<br>';
-        // echo $address . '<br>';
-        // echo $model . '<br>';
-        // echo $plateNumber . '<br>';
-        // echo $officialReceipt . '<br>';
-        // echo $certificateRegistration . '<br>';
-        // echo $paymentController . '<br>';
-        // echo $date . '<br>';
 
         if (empty($model) || empty($plateNumber) || empty($officialReceipt) || empty($certificateRegistration) || empty($paymentController)) {
             $fieldsFilledUp = 'Fill Up All Fields!';
@@ -74,7 +63,7 @@
             if ($result->num_rows > 0) {
                 echo 'Bawal'; 
             } else {
-                $query = "INSERT INTO registered(Name, Address, Model, Plate, Official_Receipt, Certificate_Registration, Date, PaymentControlNumber) VALUES ('$name', '$address', '$model', '$plateNumber', '$officialReceipt', '$certificateRegistration', '$date', '$paymentController');";
+                $query = "INSERT INTO registered(UserID, Name, Address, Model, Plate, Official_Receipt, Certificate_Registration, Date, PaymentControlNumber) VALUES ('$userID', '$name', '$address', '$model', '$plateNumber', '$officialReceipt', '$certificateRegistration', '$date', '$paymentController');";
                 $insertResult = \mysqli_query($conn, $query); 
                 echo $insertResult ? 'Data Successfully Added' : 'Error : ' . \mysqli_error($conn);
             }
@@ -166,7 +155,7 @@
                         <!-- ================ 9. PAYMENT CONTROL # ================ -->
                         <div class="input-field">
                             <label for="paymentControlNumber">Payment Control #</label>
-                            <input type="text" name="paymentControlNumber" id="paymentControlNumber">
+                            <input type="text" name="paymentControlNumber" id="paymentControlNumber" value="<?php echo empty($paymentController) ?  '' : $paymentController; ?>">
                         </div>
 
                         <!-- ================ 10. DATE ================ -->

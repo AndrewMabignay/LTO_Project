@@ -58,3 +58,10 @@ INSERT INTO registered(Name, Address, Model, Plate, Official_Receipt, Certificat
 
 -- BLOCK DUPLICATE PLATES --
 SELECT * FROM registered WHERE Plate = ?
+
+
+-- ADDITIONAL REVISION --
+ALTER TABLE registered ADD ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
+ALTER TABLE registered ADD UserID INT NOT NULL AFTER ID;
+
+SELECT Official_Receipt, Certificate_Registration, Date FROM registered WHERE UserID = 0;
