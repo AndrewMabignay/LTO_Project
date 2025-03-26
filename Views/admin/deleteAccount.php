@@ -12,7 +12,7 @@ elseif ($_SESSION['role'] !== "Admin"):
     exit;
 endif;    
 
-$id = base64_decode($_GET['id']);
+$id = base64_decode($_GET['id']) ? base64_decode($_GET['id']) : header('Location: ../admin.php');
 
 $result = mysqli_query($conn, "DELETE FROM accounts WHERE id=$id");
 header("Location:accounts.php");

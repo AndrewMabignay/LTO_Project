@@ -19,10 +19,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
     $role = $_POST['role'];
 
-    $query = "INSERT INTO accounts(Name, Age, Address, Password, Role) VALUES ('$name', '$age', '$address', '$password', '$role')";
-    $insertFields = \mysqli_query($conn, $query);
+    $query = "SELECT * FROM accounts WHERE Name = ?";
+    $stmt = $conn->prepare($query); 
+    $stmt->bind_param('s', $name);   
 
-    echo $insertFields === true ? header("Location: accounts.php") : 'Not Successfully Inserted!';
+    $stmt->execute();
+    $search = $stmt->get_result();
+        
+    if ($search->num_rows > 0) {
+        echo 'Bawal';
+    } else {
+        $query = "INSERT INTO accounts(Name, Age, Address, Password, Role) VALUES ('$name', '$age', '$address', '$password', '$role')";
+        $insertFields = \mysqli_query($conn, $query);
+
+        echo $insertFields === true ? header("Location: accounts.php") : 'Not Successfully Inserted!';
+    }
 }
 
 ?>
@@ -33,6 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <link rel="stylesheet" href="../../public/user.css">
 </head>
 <body>
     <form action="addAccount.php" method="POST">
