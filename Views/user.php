@@ -52,7 +52,7 @@
 
         if (empty($model) || empty($plateNumber) || empty($officialReceipt) || empty($certificateRegistration) || empty($paymentController)) {
             $fieldsFilledUp = 'Fill Up All Fields!';
-            echo $fieldsFilledUp;
+            // echo $fieldsFilledUp;
         } else {
             $query = "SELECT * FROM registered WHERE Plate = ?";
             $stmt = $conn->prepare($query);
@@ -61,11 +61,18 @@
             $result = $stmt->get_result();
 
             if ($result->num_rows > 0) {
-                echo 'Bawal'; 
+                $fieldsFilledUp = "Invalid Input. Duplicate Plate Number.";
+                // echo 'Bawal'; 
             } else {
                 $query = "INSERT INTO registered(UserID, Name, Address, Model, Plate, Official_Receipt, Certificate_Registration, Date, PaymentControlNumber) VALUES ('$userID', '$name', '$address', '$model', '$plateNumber', '$officialReceipt', '$certificateRegistration', '$date', '$paymentController');";
                 $insertResult = \mysqli_query($conn, $query); 
                 echo $insertResult ? 'Data Successfully Added' : 'Error : ' . \mysqli_error($conn);
+                $fieldsFilledUp = "Successfully Registered";
+
+                $plateNumber = '';
+                $officialReceipt = '';
+                $certificateRegistration = '';
+                $paymentController = '';
             }
         }
     }
@@ -81,8 +88,13 @@
     <link rel="stylesheet" href="../public/user.css">
 </head>
 <body>
+    
+
+    
+<br>
+
     <div class="container">
-        <header>Hello User</header>
+        <header>User Dashboard</header>
 
         <form action="user.php" method="POST">
             <!-- ------------------- PERSONAL DETAILS ------------------- -->
@@ -165,9 +177,17 @@
                         </div>
                     </div>
 
-                    <?php 
-                if ($invalidPlate != '') echo "<p>" . $invalidPlate . "</p>";
-            ?>
+            <?php if ($fieldsFilledUp == 'Successfully Registered'): ?>
+                <p style="color: green; font-size: 14px; margin-top: 10px;"><?php echo $fieldsFilledUp; ?></p>
+            <?php elseif ($fieldsFilledUp == 'Fill Up All Fields!' || $fieldsFilledUp == 'Invalid Input. Duplicate Plate Number.'): ?>
+                <p style="color: #A30000; font-size: 14px; margin-top: 10px;"><?php echo $fieldsFilledUp; ?></p>
+            <?php endif; ?>
+
+            
+            <?php if (!empty($invalidPlate)): ?>
+                <p style="color: #A30000; font-size: 14px; margin-top: 10px;"><?php echo $invalidPlate; ?></p>
+            <?php endif; ?>
+
 
             <div class="button-container">
                 <button type="submit" name="register">REGISTER</button>
@@ -175,19 +195,10 @@
             </div>
                 </div>
             </div>
-
-
-
-
-            
-
-
-
-            
         </form>
     </div>
 
-    
+    <br>
 
 </body>
 </html>
