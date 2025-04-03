@@ -13,8 +13,8 @@
     $id = $_SESSION['id'];
 
     $query = "SELECT * FROM accounts WHERE ID <> '$id'"; 
+    // $query = "SELECT * FROM accounts WHERE ID <> '$id' AND Name <> 'admin'"; 
     $retrieve = \mysqli_query($conn, $query);
-
 ?>
 
 <!DOCTYPE html>
@@ -28,9 +28,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- External CSS -->
-    <link rel="stylesheet" href="../../public/table.css">
+    <link rel="stylesheet" href="../../design/assets/accounts.css">
 </head>
 <body>
+    <img class="bg-image" src="../../design/assets/img/ltoLogin.png" alt="LTO Background">
+    <div class="bg-overlay"></div>
+
+    <a href="../admin.php" class="back-container">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+
     <div class="title">
         <label for="add-accounts">List of Accounts</label>
         <a href="addAccount.php">
@@ -57,7 +65,7 @@
                 <td><?php echo $result['Name'] ?></td>
                 <td><?php echo $result['Age'] ?></td>
                 <td><?php echo $result['Address'] ?></td>
-                <td><?php echo $result['Password'] ?></td>
+                <td><?php echo substr(md5($result['Password']), 0, 16) ?></td>
                 <td><?php echo $result['Role'] ?></td>
                 <td>
                     <a href="editAccount.php?id=<?php echo base64_encode($result['ID'])?>" class="edit"><i class="fa-solid fa-pen"></i></a>

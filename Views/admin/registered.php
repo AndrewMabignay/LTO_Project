@@ -23,9 +23,19 @@
     <title>Document</title>
 
     <!-- External CSS -->
-    <link rel="stylesheet" href="../../public/table.css">
+    <link rel="stylesheet" href="../../design/assets/accounts.css">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
+<img class="bg-image" src="../../design/assets/img/ltoLogin.png" alt="LTO Background">
+    <div class="bg-overlay"></div>
+
+    <a href="../admin.php" class="back-container">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
     <div class="title">
         <label for="add-accounts">List of Registered</label>
     </div>
@@ -38,6 +48,7 @@
                 <th>Plate</th>
                 <th>Official_Receipt</th>
                 <th>Certificate_Registration</th>
+                <th>Payment Control #</th>
                 <th>Date</th>
             </tr>
         </thead>
@@ -50,6 +61,7 @@
                 <td><?php echo $result['Plate'] ?></td>
                 <td><?php echo $result['Official_Receipt'] ?></td>
                 <td><?php echo $result['Certificate_Registration'] ?></td>
+                <td><?php echo $result['PaymentControlNumber'] ?></td>
                 <td><?php echo $result['Date'] ?></td>
             </tr>
 

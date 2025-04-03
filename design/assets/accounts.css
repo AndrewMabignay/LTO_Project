@@ -1,0 +1,396 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #3498db;  
+    --secondary-color: #003d4e;
+    --bg-color: #ECF0F1;
+    --text-color: #333;
+    --hover-color: rgba(52, 152, 219, 0.2);
+    --border-radius: 10px;
+    --edit-color: #2980b9;   /* Blue for edit */
+    --delete-color: #e74c3c; /* Red for delete */
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--primary-color);
+    color: var(--text-color);
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    filter: brightness(0.5) contrast(1.1);
+}
+
+.bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 93, 110, 0.5), rgba(0, 61, 78, 0.8));
+    z-index: -1;
+}
+
+.title {
+    background: var(--bg-color);
+    width: 95%;
+    height: 50px;
+    max-width: 900px;
+    padding: 0px 30px;
+
+    border-radius: var(--border-radius);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+    a {
+        text-decoration: none;
+        
+        background: var(--secondary-color);
+        color: var(--bg-color);
+        padding: 5px 15px;
+        font-size: 13px;
+        
+        border-radius: 8px;
+
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+}
+
+.title :where(a):hover {
+    background: var(--hover-color); 
+    color: var(--secondary-color); 
+    transform: scale(1.05); 
+    transition: 0.3s ease-in-out;
+}
+
+
+table {
+    background: var(--bg-color);
+    width: 95%;
+    max-width: 900px;
+
+    border-collapse: collapse;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+table :where(thead) {
+    background: var(--secondary-color);
+    color: white;
+
+    border: 1px solid var(--secondary-color);
+}
+
+table :where(thead, tbody) :where(th, td) {
+    padding: 15px;
+    text-align: center;
+}
+
+table :where(thead) :where(th) {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+table :where(tbody) :where(tr) :where(td) {
+    color: black;
+    font-size: 14px;
+}
+
+table :where(tbody) :where(tr) {
+    border-bottom: 1px solid #E0E0E0;
+    transition: background 0.3s ease-in-out;
+}
+
+table :where(tbody) :where(tr:last-child) {
+    border-bottom: none;
+}
+
+table :where(tbody) :where(tr:hover) {
+    background: var(--hover-color);
+}
+
+/* ------------- Action Icons ------------- */
+table :where(tbody) :where(td) :where(a) {
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.3s ease-in-out;
+}
+
+table :where(tbody) :where(td) :where(a.edit) :where(i) {
+    color: var(--edit-color);
+    margin: 0px 5px;
+}
+
+table :where(tbody) :where(td) :where(a.delete) :where(i) {
+    color: var(--delete-color);
+    margin: 0px 5px;
+}
+
+table :where(tbody) :where(td) :where(a:hover) :where(i) {
+    opacity: 0.7;
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+    table {
+        width: 100%;
+    }
+
+    table :where(thead, tbody) :where(th, td) {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+
+
+
+
+.title {
+    background: var(--bg-color);
+    width: 95%;
+    height: 50px;
+    max-width: 900px;
+    padding: 0px 30px;
+    border-radius: var(--border-radius);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover effect for the Create button */
+.title a {
+    text-decoration: none;
+    background: var(--secondary-color);
+    color: var(--bg-color);
+    padding: 5px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.title a:hover {
+    background: var(--hover-color);
+    color: var(--secondary-color);
+    transform: scale(1.05);
+}
+
+/* Table styling */
+table {
+    background: var(--bg-color);
+    width: 95%;
+    max-width: 900px;
+    border-collapse: collapse;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Header styling */
+table thead {
+    background: var(--secondary-color);
+    color: white;
+    border: 1px solid var(--secondary-color);
+}
+
+table thead th {
+    padding: 15px;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Table rows styling */
+table tbody tr {
+    border-bottom: 1px solid #E0E0E0;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+table tbody tr:hover {
+    background: var(--hover-color);
+    transform: scale(1.01);
+}
+
+/* Table data styling */
+table tbody td {
+    padding: 15px;
+    text-align: center;
+    font-size: 14px;
+    color: black;
+    transition: background 0.3s ease;
+}
+
+/* Hover effect for table data cells */
+table tbody td:hover {
+    background: rgba(52, 152, 219, 0.1);
+}
+
+/* Action Icons (edit and delete) */
+table tbody td a {
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+table tbody td a.edit i {
+    color: var(--edit-color);
+}
+
+table tbody td a.delete i {
+    color: var(--delete-color);
+}
+
+table tbody td a:hover i {
+    opacity: 0.7;
+    transform: scale(1.1);
+}
+
+/* Back button */
+.back-container {
+    background: #ECF0F1;
+    height: 40px;
+    width: 40px;
+    color: #003d4e;
+    text-decoration: none;
+    border: 1px solid #003d4e;
+    border-radius: 50%;
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, transform 0.2s ease, color 0.3s ease;
+}
+
+.back-container:hover {
+    background: rgba(52, 152, 219, 0.2);
+    transform: scale(1.1);
+    color: #ECF0F1;
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+    table {
+        width: 100%;
+    }
+
+    table thead th, table tbody td {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+
+/* Table data styling */
+table tbody td {
+    padding: 15px;
+    text-align: center;
+    font-size: 14px;
+    color: black;
+    opacity: 0; /* Make td initially invisible */
+    transform: translateY(20px); /* Move the td slightly down */
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Transition for opacity and transform */
+}
+
+/* Apply animation when the table rows are loaded */
+table tbody tr:nth-child(even) td {
+    animation: fadeInUp 0.8s forwards; /* Apply the fade-in-up animation */
+    animation-delay: 0.2s; /* Slight delay for each even row */
+}
+
+table tbody tr:nth-child(odd) td {
+    animation: fadeInUp 0.8s forwards; /* Apply the fade-in-up animation */
+    animation-delay: 0.3s; /* Slight delay for each odd row */
+}
+
+/* Define the animation keyframes */
+@keyframes fadeInUp {
+    to {
+        opacity: 1; /* Make td visible */
+        transform: translateY(0); /* Move td to its original position */
+    }
+}
+
+/* Table data styling */
+table tbody td {
+    padding: 15px;
+    text-align: center;
+    font-size: 14px;
+    color: black;
+    opacity: 0; /* Initially invisible */
+    transform: translateY(20px); /* Initially moved down */
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Transition for opacity and transform */
+}
+
+/* Apply animation to each td with a delay based on its position in the row */
+table tbody tr:nth-child(1) td:nth-child(1) {
+    animation: popOut 0.5s ease forwards 0s;
+}
+
+table tbody tr:nth-child(1) td:nth-child(2) {
+    animation: popOut 0.5s ease forwards 0.1s;
+}
+
+table tbody tr:nth-child(1) td:nth-child(3) {
+    animation: popOut 0.5s ease forwards 0.2s;
+}
+
+/* Apply the same for all rows */
+table tbody tr:nth-child(2) td:nth-child(1) {
+    animation: popOut 0.5s ease forwards 0s;
+}
+
+table tbody tr:nth-child(2) td:nth-child(2) {
+    animation: popOut 0.5s ease forwards 0.1s;
+}
+
+table tbody tr:nth-child(2) td:nth-child(3) {
+    animation: popOut 0.5s ease forwards 0.2s;
+}
+
+/* Repeat the pattern for all rows ... */
+
+/* Keyframe for the pop-out animation */
+@keyframes popOut {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+

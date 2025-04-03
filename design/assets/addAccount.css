@@ -1,0 +1,167 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --lto-blue: #005d6e;
+    --lto-blue-dark: #003d4e;
+    --lto-orange: #A30000;
+    --lto-light: #F5F7FA;
+    --lto-white: #FFFFFF;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to right, #005d6e, #003d4e); /* LTO Colors */
+    transition: background 0.5s ease-in-out;
+}
+
+form {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    width: 350px;
+    border-top: 5px solid #A30000; 
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeIn 0.6s ease-in-out forwards;
+}
+
+/* Header Styling */
+.form-header {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    color: #003d4e; /* LTO Blue */
+    margin-bottom: 15px;
+}
+
+/* Label Styling */
+label {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 10px;
+    color: #003d4e;
+}
+
+/* Input and Select Styling */
+input, select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid var(--lto-blue-dark);
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: all 0.3s ease-in-out;
+}
+
+input:hover, select:hover {
+    border-color: var(--lto-orange);
+    outline: none;
+    transform: scale(1.05);
+}
+
+input:focus, select:focus {
+    border-color: var(--lto-orange);
+    outline: none;
+    transform: scale(1.05);
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Button Styling */
+button {
+    background: var(--lto-blue-dark);
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    background: var(--lto-blue);
+    color: var(--lto-light);
+}
+
+/* Animation */
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.role-container {
+position: relative;
+}
+
+/* Custom Select Styling */
+select {
+width: 100%;
+padding: 12px;
+border: 2px solid var(--lto-blue-dark);; /* LTO Blue */
+border-radius: 6px;
+appearance: none;
+background-color: white;
+font-weight: 500;
+appearance: none; /* Removes default browser styles */
+cursor: pointer;
+transition: all 0.3s ease-in-out;
+}
+
+/* On Hover */
+select:hover {
+border-color: var(--lto-orange); /* LTO Yellow */
+}
+
+/* On Focus */
+select:focus {
+outline: none;
+border-color: var(--lto-orange);
+}
+
+.back-container {
+    background: #ECF0F1;
+    height: 40px;
+    width: 40px;
+    color: #005d6e;
+    text-decoration: none;
+    border: 1px solid #003d4e;
+    border-radius: 50%;
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.back-container i {
+    color: #003d4e; /* This makes sure the icon inherits the color from the parent */
+    transition: color 0.3s ease; /* Adds smooth color transition */
+}
+
+.back-container:hover {
+    background: rgba(52, 152, 219, 0.2);
+    color: #ECF0F1;
+    transform: scale(1.1);
+}
+
+.back-container:hover i {
+    color: #ECF0F1; /* Changes the color of the icon when hovered */
+}

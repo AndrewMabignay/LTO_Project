@@ -18,6 +18,7 @@ if (isset($_SESSION['id'])) {
     }
 }
 
+$fieldsInvalid = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = $_POST['username'];
@@ -25,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // echo $username . $password;
     if (empty($username) || empty($password)) {
-        echo "Please enter both username and password!";
+        $fieldsInvalid = "Please enter both username and password!";
         exit();
     }
 
@@ -35,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $statement->execute();
     $result = $statement->get_result();
 
-    echo $result->num_rows;
+    // echo $result->num_rows;
 
     if ($result->num_rows > 0) {
         $users = $result->fetch_assoc();
@@ -56,8 +57,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
             exit();
         } else {
-            echo "Incorrect password!";
+            $fieldsInvalid = "Incorrect password!";
         }
+    } else {
+        $fieldsInvalid = "Incorrect Username and Password!";
     }
 }
 ?>
@@ -67,127 +70,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LTO Login Page</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-
-        /* Balanced Darker LTO-Themed Gradient */
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #2C4A9A, #C62828); /* Darker Blue & Red */
-            animation: fadeIn 1s ease-in-out;
-        }
-
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-
-        /* Refined Glassmorphism */
-        .login-container {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 30px;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            width: 320px;
-            color: white;
-            border-top: 3px solid rgba(255, 255, 255, 0.3);
-        }
-
-
-        h2 {
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-
-        label {
-            display: block;
-            text-align: left;
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: none;
-            border-radius: 5px;
-            outline: none;
-            font-size: 16px;
-            background: rgba(255, 255, 255, 0.25);
-            color: white;
-            transition: 0.3s;
-        }
-
-
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-
-        input:focus {
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.35);
-        }
-
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background: white;
-            color: #2C4A9A; /* Darker Blue */
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-
-        button:hover {
-            background: #C62828; /* Darker Red */
-            color: white;
-        }
-    </style>
+    <title>LTO Portal Login</title>
+    
+    <link rel="stylesheet" href="../design/assets/login.css">
 </head>
 <body>
-    <div class="login-container">
-        <h2>LTO Login</h2>
+    <img class="bg-image" src="../design/assets/img/ltoLogin.png" alt="LTO Background">
+    <div class="bg-overlay"></div>
+    
+    <div class="container">
+        <img src="../design/assets/img/lto_logo.png" alt="LTO Logo" class="lto-logo">
+        <h2>LTO Portal Login</h2>
         <form action="login.php" method="POST">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Enter username" required>
+            <div class="input-container">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            </div>
 
+            <div class="input-container">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
 
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter password" required>
-
+            <p class="error-message"><?php echo $fieldsInvalid == '' ? '' : $fieldsInvalid ?></p>
 
             <button type="submit">LOGIN</button>
         </form>
     </div>
+
+    <script>
+        window.addEventListener("pageshow", function(event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+    </script>
 </body>
 </html>

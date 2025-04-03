@@ -1,0 +1,126 @@
+:root {
+    --lto-blue: #005d6e;
+    --lto-blue-dark: #003d4e;
+    --lto-orange: #A30000;
+    --lto-light: #F5F7FA;
+    --lto-white: #FFFFFF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, var(--lto-blue), var(--lto-blue-dark));
+    animation: fadeInBg 1.5s ease-in-out;
+    overflow: hidden;
+}
+
+.bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    filter: brightness(0.6);
+}
+
+.bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0, 93, 110, 0.7), rgba(0, 61, 78, 0.8));
+    z-index: -1;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 1s forwards ease-in-out 0.5s;
+    width: 90%;
+    max-width: 280px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.container :where(p) {
+    margin: 0px 0px 10px 0px;
+    color: var(--lto-white);
+}
+
+.container :where(a) {
+    display: block;
+    text-decoration: none;
+    color: var(--lto-white);
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: 0.3s;
+    opacity: 0;
+    transform: translateY(10px);
+    letter-spacing: 0.5px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3)
+}
+
+.container :where(.btn-accounts) { 
+    background: #2e86c1; 
+    animation: fadeIn 0.8s forwards ease-in-out 1s; 
+}
+
+.container :where(.btn-accounts:hover) { 
+    background: #2471a3; 
+}
+
+.container :where(.btn-registration) { 
+    background: #29b765; 
+    animation: fadeIn 0.8s forwards ease-in-out 1.2s; 
+}
+
+.container :where(.btn-registration:hover) { 
+    background: #229954; 
+}
+
+.container :where(.btn-logout) { 
+    background: #d62c1a; 
+    animation: fadeIn 0.8s forwards ease-in-out 1.4s; 
+}
+
+.container :where(.btn-logout:hover) { 
+    background: #a8322b; 
+}
+
+/* Animations */
+@keyframes fadeInBg {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

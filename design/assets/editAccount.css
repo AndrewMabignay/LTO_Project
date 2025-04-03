@@ -1,0 +1,217 @@
+/* Import Poppins font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    --primary-color: #003d4e;
+    --secondary-color: #A30000;
+    --tertiary-color: #005d6e;
+    --quaternary-color: #FFD700;  
+}
+
+/* Fade-in animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+.bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+    filter: brightness(0.5) contrast(1.1);
+}
+
+.bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 93, 110, 0.5), rgba(0, 61, 78, 0.8));
+    z-index: -1;
+}
+
+/* Apply animation */
+.form-container {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    width: 420px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-top: 5px solid var(--secondary-color);
+    text-align: center;
+    
+    /* Apply Poppins font */
+    font-family: 'Poppins', sans-serif;
+
+    /* Animation */
+    opacity: 0; /* Start hidden */
+    animation: fadeInUp 0.6s ease-out forwards;
+    animation-delay: 0.2s;
+}
+
+.form-container :where(h2) {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.form-container :where(.form-group) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.form-container :where(.form-group) :where(label) {
+    font-weight: 500;
+    color: #333;
+    width: 120px; /* Fixed width */
+    text-align: left;
+    margin-right: 10px;
+}
+
+.form-container :where(.form-group) :where(input, select) {
+    flex: 1; /* Expand to available space */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    appearance: none;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover effect for input and select fields */
+.form-container :where(.form-group) :where(input:hover, select:hover) {
+    transform: scale(1.05); 
+    border-color: var(--primary-color); 
+}
+
+.form-container :where(.form-group) input:focus, select:focus {
+    border-color: var(--primary-color); 
+    outline: none;
+    transform: scale(1.05); 
+}
+
+
+.form-container :where(.form-group) :where(select) :where(option) {
+    margin: 30px;
+}
+
+.form-container :where(button) {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--tertiary-color); /* LTO Red */
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.form-container button:hover {
+    background-color: var(--primary-color);
+}
+
+.back-container {
+    background: #ECF0F1;
+    height: 40px;
+    width: 40px;
+    color: #005d6e;
+    text-decoration: none;
+    border: 1px solid #003d4e;
+    border-radius: 50%;
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.back-container:hover {
+    background: rgba(52, 152, 219, 0.2);
+    color: #ECF0F1;
+    transform: scale(1.1);
+}
+
+a[href="../accounts.php"] {
+    background: #ECF0F1;
+    height: 40px;
+    width: 40px;
+    color: #005d6e;
+    text-decoration: none;
+
+    border: 1px solid #003d4e;
+    border-radius: 50%;
+
+    position: absolute;
+    top: 20px;
+    left: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* TESTING */
+
+/* Style for the select element */
+.form-container :where(.form-group) select {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    appearance: none;
+    transition: border-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer; /* Optional: changes the cursor to a pointer */
+}
+
+/* Hover effect for select */
+.form-container :where(.form-group) select:hover {
+    transform: scale(1.05); /* Slightly enlarges the select box */
+    border-color: var(--tertiary-color); /* Change border color on hover */
+}
+
+/* Focus effect for select */
+.form-container :where(.form-group) select:focus {
+    border-color: var(--tertiary-color); /* LTO Blue */
+    outline: none;
+    transform: scale(1.05); /* Slightly enlarge on focus */
+}
+
+/* To target the options, you can change the background color when the select box is focused */
+.form-container :where(.form-group) select:focus option {
+    background-color: var(--tertiary-color); /* Change background color of options when select box is focused */
+    color: white; /* Change the text color */
+}
