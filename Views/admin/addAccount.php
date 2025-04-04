@@ -21,20 +21,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
     $role = $_POST['role'];
 
-    $query = "SELECT * FROM accounts WHERE Name = ?";
-    $stmt = $conn->prepare($query); 
-    $stmt->bind_param('s', $name);   
-
-    $stmt->execute();
-    $search = $stmt->get_result();
-        
-    if ($search->num_rows > 0) {
-        $addVerification = 'Duplicate name invalid!';
+    if ($age < 16 || $age > 120) {
+        $addVerification = "Age invalid!";
     } else {
-        $query = "INSERT INTO accounts(Name, Age, Address, Password, Role) VALUES ('$name', '$age', '$address', '$password', '$role')";
-        $insertFields = \mysqli_query($conn, $query);
+        $query = "SELECT * FROM accounts WHERE Name = ?";
+        $stmt = $conn->prepare($query); 
+        $stmt->bind_param('s', $name);   
 
-        echo $insertFields === true ? header("Location: accounts.php") : 'Not Successfully Inserted!';
+        $stmt->execute();
+        $search = $stmt->get_result();
+            
+        if ($search->num_rows > 0) {
+            $addVerification = 'Duplicate name invalid!';
+        } else {
+            $query = "INSERT INTO accounts(Name, Age, Address, Password, Role) VALUES ('$name', '$age', '$address', '$password', '$role')";
+            $insertFields = \mysqli_query($conn, $query);
+
+            echo $insertFields === true ? header("Location: accounts.php") : 'Not Successfully Inserted!';
+        }
     }
 }
 
@@ -69,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <div class="form-group">
             <label for="age">Age</label>
-            <input type="number" name="age" id="age" placeholder="Enter your age" min="0" required>
+            <input type="number" name="age" id="age" placeholder="Enter your age" min="0" max="120" oninput="validateAge(this)" required>
         </div>
 
         <div class="form-group">
@@ -96,5 +100,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <button type="submit">REGISTER</button>
     </form>
+
+    <script>
+        function validateAge(input) {
+            const value = input.value;
+
+            // If the value is less than 0 or greater than 120, set it to a valid range.
+            if (value < 0) {
+                input.value = '';
+            } else if (value > 120) {
+                input.value = 120;
+            } else if (value == 0) {
+                input.value = '';
+            }
+        }
+    </script>
 </body>
 </html>

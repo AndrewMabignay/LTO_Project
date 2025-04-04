@@ -12,12 +12,14 @@
     endif;  
     
     $invalidPlate = '';
+    $name = $_SESSION['name'];
+    // echo $name;
 
     if (isset($_POST['search'])) {
         $userID = $_POST['userId'];
         $plateNumber = $_POST['plateNumber'];
 
-        $query = "SELECT Official_Receipt, Certificate_Registration, Date FROM registered WHERE UserID = ? AND Plate = ?";
+        $query = "SELECT Model, Official_Receipt, Certificate_Registration, PaymentControlNumber, Date FROM registered WHERE UserID = ? AND Plate = ?";
         $stmt = $conn->prepare($query);
 
         $stmt->bind_param("is", $userID, $plateNumber);
@@ -27,8 +29,12 @@
         
         if ($search->num_rows > 0) {
             $fields = $search->fetch_assoc();
+            $model = $fields['Model'];
             $officialReceipt = $fields['Official_Receipt'];
             $certificateRegistration = $fields['Certificate_Registration'];
+            $paymentController = $fields['PaymentControlNumber'];
+            // echo $paymentController;
+            echo $model;
         } else {
             /* Invalid Search */
             $invalidPlate = 'Invalid Plate Search. Please try again!'; 
@@ -54,14 +60,20 @@
             $fieldsFilledUp = 'Fill Up All Fields!';
             // echo $fieldsFilledUp;
         } else {
-            $query = "SELECT * FROM registered WHERE Plate = ?";
+            $query = "SELECT * FROM registered WHERE Plate = ? OR Official_Receipt = ? OR Certificate_Registration = ? OR PaymentControlNumber = ?";
+
             $stmt = $conn->prepare($query);
-            $stmt->bind_param("s", $plateNumber);
+            $stmt->bind_param("ssss", $plateNumber, $officialReceipt, $certificateRegistration, $paymentController);
             $stmt->execute();
             $result = $stmt->get_result();
 
             if ($result->num_rows > 0) {
-                $fieldsFilledUp = "Invalid Input. Duplicate Plate Number.";
+                $fieldsFilledUp = "Invalid Input. Duplicate Invalid!.";
+                $model = '';
+                $plateNumber = '';
+                $officialReceipt = '';
+                $certificateRegistration = '';
+                $paymentController = '';
                 // echo 'Bawal'; 
             } else {
                 $query = "INSERT INTO registered(UserID, Name, Address, Model, Plate, Official_Receipt, Certificate_Registration, Date, PaymentControlNumber) VALUES ('$userID', '$name', '$address', '$model', '$plateNumber', '$officialReceipt', '$certificateRegistration', '$date', '$paymentController');";
@@ -141,7 +153,7 @@
                         <!-- ================ 5. MAKE / MODEL ================ -->
                         <div class="input-field">
                             <label for="model">Make / Model</label>
-                            <input type="text" name="model" id="model">            
+                            <input type="text" name="model" id="model" value="<?php echo empty($model) ?  '' : $model; ?>">            
                         </div>
 
                         <!-- ================ 6. PLATE # ================ -->
@@ -179,7 +191,7 @@
 
             <?php if ($fieldsFilledUp == 'Successfully Registered'): ?>
                 <p style="color: green; font-size: 14px; margin-top: 10px;"><?php echo $fieldsFilledUp; ?></p>
-            <?php elseif ($fieldsFilledUp == 'Fill Up All Fields!' || $fieldsFilledUp == 'Invalid Input. Duplicate Plate Number.'): ?>
+            <?php elseif ($fieldsFilledUp == 'Fill Up All Fields!' || $fieldsFilledUp == 'Invalid Input. Duplicate Invalid!.'): ?>
                 <p style="color: #A30000; font-size: 14px; margin-top: 10px;"><?php echo $fieldsFilledUp; ?></p>
             <?php endif; ?>
 

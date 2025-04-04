@@ -12,7 +12,7 @@
 
     // $id = $_SESSION['id']; 
     $id = isset($_GET['id']) ? base64_decode($_GET['id']) : (isset($_POST['id']) ? $_POST['id'] : '');
-    echo $id;
+    // echo $id;
 
     $editVerification = '';
 
@@ -98,7 +98,7 @@
 
                 <div class="form-group">
                     <label for="age">Age</label>
-                    <input type="number" name="age" id="age" value="<?php echo $result['Age'] ?>">
+                    <input type="number" name="age" id="age" value="<?php echo $result['Age'] ?>" min="17" max="120" oninput="validateAge(this)">
                 </div>
 
                 <div class="form-group">
@@ -130,8 +130,6 @@
                 <?php if ($editVerification == 'This Name is already taken!'):?>
                     <p style="color: #A30000; font-size: 13px; margin-bottom: 10px;"><?php echo $editVerification?></p>
                 <?php endif;?>
-                
-                
 
                 <button type="submit" name="submit">SUBMIT</button>
             </form>
@@ -139,5 +137,20 @@
             <p>No record found.</p>
         <?php endif; ?>
     </div>
+
+    <script>
+        function validateAge(input) {
+            const value = input.value;
+
+            // If the value is less than 0 or greater than 120, set it to a valid range.
+            if (value < 0) {
+                input.value = '';
+            } else if (value > 120) {
+                input.value = 120;
+            } else if (value == 0) {
+                input.value = '';
+            }
+        }
+    </script>
 </body>
 </html>
